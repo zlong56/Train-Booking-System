@@ -1,0 +1,204 @@
+{% extends "backend/base/admin_base.html" %}
+{% load static %}
+
+{% block title %}Train Booking System{% endblock title %}
+
+{% block content %}
+
+<style>
+    .search-container {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr 1fr 0.5fr auto;
+        gap: 10px;
+        background-color: #f7faff;
+        padding: 10px;
+        border-radius: 10px;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .search-box {
+        display: flex;
+        align-items: center;
+        padding: 10px;
+        background-color: white;
+        border-right: 1px solid #e0e0e0;
+    }
+
+    .search-box:last-child {
+        border-right: none;
+    }
+
+    .search-box input {
+        border: none;
+        outline: none;
+        font-size: 14px;
+        color: #333;
+        margin-left: 8px;
+    }
+
+    .icon {
+        font-size: 20px;
+        color: #888;
+    }
+
+    .switch-icon {
+        font-size: 18px;
+        color: #888;
+        padding: 0 15px;
+        cursor: pointer;
+    }
+
+    .search-button {
+        background-color: #f44336;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        padding: 10px 20px;
+        font-size: 14px;
+        cursor: pointer;
+        margin-left: 50px;
+    }
+
+    .search-button:hover {
+        background-color: #d32f2f;
+    }
+
+    .optional {
+        color: #888;
+        font-size: 12px;
+    }
+
+    .train-list {
+        margin-top: 15px;
+        margin-bottom: 15px;
+        margin-left: 2px;
+        padding-bottom: 10px;
+        border-left: 4px solid #303956;
+    }
+</style>
+
+<form method="POST">
+    {% csrf_token %}
+
+    <div class="row">
+        <div class="col">
+            <label style="margin-left: 58px;">From</label>
+        </div>
+        <div class="col">
+            <label style="margin-left: 50px;">To</label>
+        </div>
+        <div class="col">
+            <label style="margin-left: 50px;">Depart Date</label>
+        </div>
+        <div class="col">
+            <label style="margin-left: 30px;">Arrive Date</label>
+            <span class="optional">(Optional)</span>
+        </div>
+        <div class="col-1">
+            <label style="margin-left: 10px;">No. Pax</label>
+        </div>
+        <div class="col"></div>
+    </div>
+    
+    <div class="search-container">
+        <div class="search-box">
+            <span class="icon">📍</span>
+            <select class="form-control selectpicker" style="width: 100%;" data-live-search="true" name="Depart" {% if not search_mode %}required{% endif %}>
+                <option value="" disabled selected>Select State</option>
+                {% for x in state %}
+                    <option value="{{x.pk}}">
+                        {{x.Name}}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+    
+        <div class="search-box">
+            <span class="icon">🚌</span>
+            <select class="form-control selectpicker" style="width: 100%;" data-live-search="true" name="Arrive" {% if not search_mode %}required{% endif %}>
+                <option value="" disabled selected>Select State</option>
+                {% for x in state %}
+                    <option value="{{x.pk}}">
+                        {{x.Name}}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+    
+        <div class="search-box">
+            <span class="icon">📅</span>
+            <input type="date" name="Date" placeholder="Date"  {% if not search_mode %}required{% endif %}>
+            <span class="optional">&nbsp;&nbsp;&nbsp;&nbsp;</span>
+        </div>
+    
+        <div class="search-box">
+            <span class="icon">📅</span>
+            <input type="date" name="ReturnDate" placeholder="Return Date">
+        </div>
+
+        <div classs="col">
+            <input class="form-control" type="number" name="NoPax" placeholder="Pax" style="margin-top:10px; border: none;" {% if not search_mode %}required{% endif %}>
+        </div>
+    
+        <button class="search-button" name="search_train">SEARCH TRAIN</button>
+    </div>
+    
+    {% if search_mode %}
+        <br><hr>
+
+        {% if train_obj %}
+            {% for train_info in train_seat_list %}
+                <div class="row train-list" style="margin-top:20px;">
+
+                    <div class="col">
+                        <h5><b>{{train_info.train.DepartDateTime|date:"d M Y"}}</b></h5>
+                    </div>
+
+                    <div class="col">
+                        <h5><b>{{train_info.train.TrainCode}}</b></h5>
+                    </div>
+
+                    <div class="col">
+                        <div class="row">
+                            <h5><b>{{train_info.train.DepartDateTime|date:"g:ia"}}</b></h5>
+                        </div>
+                        <div class="row">
+                            <p>{{train_info.train.DepartLocation.Name}}</p>
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <div class="row">
+                            <h5><b>{{train_info.train.ArriveDateTime|date:"g:ia"}}</b></h5>
+                        </div>
+                        <div class="row">
+                            <p>{{train_info.train.ArriveLocation.Name}}</p>
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <span>MYR</span>
+                        <span style="font-size: 18px; font-weight: bold;">{{train_info.train.Price}}</span>
+                    </div>
+
+                    <div class="col">
+                        <h5><b>{{train_info.available_seat}}</b></h5>
+                        <span>available seats</span>
+                    </div>
+
+                    <div class="col">
+                        <button class="btn btn-primary" type="submit" value="{{train_info.train.pk}}" name="view_train">View Details</button>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>No Train Found</p>
+        {% endif %}
+    {% endif %}
+
+    {% if error %}
+        <h1>Error</h1>
+    {% endif %}
+</form>
+
+{% endblock content %}

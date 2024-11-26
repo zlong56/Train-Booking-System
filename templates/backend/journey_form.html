@@ -1,0 +1,63 @@
+<div class="row">
+    <div class="col-3">
+        <label style="margin-top: 10px">Departure Date Time</label>
+        <input class="form-control" type="datetime-local" name="DepartDateTime" required>
+    </div>
+
+    <div class="col-3">
+        <label style="margin-top: 10px">Departure Date Time</label>
+        <input class="form-control" type="datetime-local" name="ArriveDateTime" required>
+    </div>
+</div>
+
+<div class="row">
+    <div class=col-2>
+        <div class="row" style="margin-top: 10px;">
+            <label>Total Passenger (Fixed)</label>
+        </div>
+        <input class="form-control" style="background-color: rgb(222, 220, 220);" value="120" readonly>
+    </div>
+
+    <div class="col-2">
+        <label style="margin-top: 10px;">Price per pax (RM)</label>
+        <input class="form-control" name="Price" required>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-4">
+        <label style="margin-top: 10px;">Departure State</label>
+        <select class="form-control selectpicker" style="width: 100%;" data-live-search="true" name="Depart" required>
+            <option value="" disabled selected>Select State</option>
+            {% for x in state %}
+                <option value="{{x.pk}}">
+                    {{x.Name}}
+                </option>
+            {% endfor %}
+        </select>
+    </div>
+    
+    <div class="col-4">
+        <label style="margin-top: 10px;">Depart Location</label>
+        <input class="form-control" name="DepartLocation" required>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-4">
+        <label style="margin-top: 10px;">Depart State</label>
+        <select class="form-control selectpicker" style="width: 100%;" data-live-search="true" name="Arrive">
+            <option value="" disabled selected>Select State</option>
+            {% for x in state %}
+                <option value="{{x.pk}}">
+                    {{x.Name}}
+                </option>
+            {% endfor %}
+        </select>
+    </div>
+    
+    <div class="col-4">
+        <label style="margin-top: 10px;">Arrive Location</label>
+        <input class="form-control" name="ArriveLocation" required>
+    </div>
+</div>

@@ -1,0 +1,130 @@
+{% load static %}
+<header id="page-topbar">
+<div class="layout-width">
+    <div class="navbar-header">
+        <div class="d-flex">
+            <!-- LOGO -->
+            <div class="navbar-brand-box horizontal-logo">
+                <a href="index.html" class="logo logo-dark">
+                    <span class="logo-sm">
+                        <img src="{% static 'landing_assets/img/logo-sm.png' %}" alt="" height="22" style="width: 100%;height: 100%;" >
+                    </span>
+                    <span class="logo-lg">
+                        <img src="{% static 'landing_assets/img/logo.png' %}" alt="" height="17">
+                    </span>
+                </a>
+
+                <a href="index.html" class="logo logo-light">
+                    <span class="logo-sm">
+                        <img src="{% static 'landing_assets/img/logo-sm.png' %}" alt="" height="22" style="width: 100%;height: 100%;" >
+                    </span>
+                    <span class="logo-lg">
+                        <img src="{% static 'landing_assets/img/logo.png' %}" alt="" height="17">
+                    </span>
+                </a>
+            </div>
+
+            <button type="button" class="btn btn-sm px-3 fs-16 header-item vertical-menu-btn topnav-hamburger" id="topnav-hamburger-icon">
+                <span class="hamburger-icon">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </span>
+            </button>
+
+        </div>
+
+        <div class="d-flex align-items-center">
+
+            <div class="dropdown d-md-none topbar-head-dropdown header-item">
+                <button type="button" class="btn btn-icon btn-topbar btn-ghost-secondary rounded-circle" id="page-header-search-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="bx bx-search fs-22"></i>
+                </button>
+                <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end p-0" aria-labelledby="page-header-search-dropdown">
+                    <form class="p-3">
+                        <div class="form-group m-0">
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="Search ..." aria-label="Recipient's username">
+                                <button class="btn btn-primary" type="submit"><i class="mdi mdi-magnify"></i></button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="ms-1 header-item d-none d-sm-flex">
+                <button type="button" onclick="save_preference()" class="btn btn-icon btn-topbar btn-ghost-secondary rounded-circle light-dark-mode">
+                    <i class='bx bx-moon fs-22'></i>
+                </button>
+            </div>
+
+            {% include "backend/base/profile_icon.html" %}
+        </div>
+    </div>
+</div>
+</header>
+
+<script>
+
+    function T(n, e) {
+        Array.from(document.querySelectorAll("input[name=" + n + "]"))
+            .forEach(function(a) {
+                e == a.value ? a.checked = !0 : a.checked = !1, a.addEventListener("change", function() {
+                    document.documentElement.setAttribute(n, a.value), sessionStorage.setItem(n, a.value), o(), "data-layout-width" == n && "boxed" == a.value ? (document.documentElement.setAttribute("data-sidebar-size", "sm-hover"), sessionStorage.setItem("data-sidebar-size", "sm-hover"), document.getElementById("sidebar-size-small-hover")
+                        .checked = !0) : "data-layout-width" == n && "fluid" == a.value && (document.documentElement.setAttribute("data-sidebar-size", "lg"), sessionStorage.setItem("data-sidebar-size", "lg"), document.getElementById("sidebar-size-default")
+                        .checked = !0), "data-layout" == n && ("vertical" == a.value ? (y("vertical"), s(), feather.replace()) : "horizontal" == a.value ? (document.getElementById("sidebarimg-none") && document.getElementById("sidebarimg-none")
+                        .click(), y("horizontal"), feather.replace()) : "twocolumn" == a.value ? (y("twocolumn"), document.documentElement.setAttribute("data-layout-width", "fluid"), document.getElementById("layout-width-fluid")
+                        .click(), i(), u(), s(), feather.replace()) : "semibox" == a.value && (y("semibox"), document.documentElement.setAttribute("data-layout-width", "fluid"), document.getElementById("layout-width-fluid")
+                        .click(), document.documentElement.setAttribute("data-layout-style", "default"), document.getElementById("sidebar-view-default")
+                        .click(), s(), feather.replace()));
+                    var e, t = "block";
+                    "semibox" == document.documentElement.getAttribute("data-layout") && ("hidden" == document.documentElement.getAttribute("data-sidebar-visibility") ? (document.documentElement.removeAttribute("data-sidebar"), document.documentElement.removeAttribute("data-sidebar-image"), document.documentElement.removeAttribute("data-sidebar-size"), t = "none") : (document.documentElement.setAttribute("data-sidebar", sessionStorage.getItem("data-sidebar")), document.documentElement.setAttribute("data-sidebar-image", sessionStorage.getItem("data-sidebar-image")), document.documentElement.setAttribute("data-sidebar-size", sessionStorage.getItem("data-sidebar-size")))), document.getElementById("sidebar-size")
+                        .style.display = t, document.getElementById("sidebar-color")
+                        .style.display = t, document.getElementById("sidebar-img") && (document.getElementById("sidebar-img")
+                            .style.display = t), "data-preloader" == n && "enable" == a.value ? (document.documentElement.setAttribute("data-preloader", "enable"), (e = document.getElementById("preloader")) && setTimeout(function() {
+                                e.style.opacity = "0", e.style.visibility = "hidden"
+                            }, 1e3), document.getElementById("customizerclose-btn")
+                            .click()) : "data-preloader" == n && "disable" == a.value && (document.documentElement.setAttribute("data-preloader", "disable"), document.getElementById("customizerclose-btn")
+                            .click()), "data-bs-theme" == n && window.dispatchEvent(x)
+                })
+            }), document.getElementById("collapseBgGradient") && Array.from(document.querySelectorAll("#collapseBgGradient .form-check input"))
+            .forEach(function(e) {
+                var t = document.getElementById("collapseBgGradient");
+                1 == e.checked && new bootstrap.Collapse(t, {
+                        toggle: !1
+                    })
+                    .show(), document.querySelector("[data-bs-target='#collapseBgGradient']") && document.querySelector("[data-bs-target='#collapseBgGradient']")
+                    .addEventListener("click", function(e) {
+                        document.getElementById("sidebar-color-gradient")
+                            .click()
+                    })
+            }), document.querySelectorAll("[data-bs-target='#collapseBgGradient.show']") && Array.from(document.querySelectorAll("[data-bs-target='#collapseBgGradient.show']"))
+            .forEach(function(e) {
+                e.addEventListener("click", function() {
+                    var e = document.getElementById("collapseBgGradient");
+                    new bootstrap.Collapse(e, {
+                            toggle: !1
+                        })
+                        .hide()
+                })
+            }), Array.from(document.querySelectorAll("[name='data-sidebar']"))
+            .forEach(function(e) {
+                document.querySelector("[data-bs-target='#collapseBgGradient']") && (document.querySelector("#collapseBgGradient .form-check input:checked") ? document.querySelector("[data-bs-target='#collapseBgGradient']")
+                    .classList.add("active") : document.querySelector("[data-bs-target='#collapseBgGradient']")
+                    .classList.remove("active"), e.addEventListener("change", function() {
+                        document.querySelector("#collapseBgGradient .form-check input:checked") ? document.querySelector("[data-bs-target='#collapseBgGradient']")
+                            .classList.add("active") : document.querySelector("[data-bs-target='#collapseBgGradient']")
+                            .classList.remove("active")
+                    }))
+            })
+    }
+    function save_preference(){
+        preference = document.documentElement.getAttribute("data-bs-theme")
+        if(preference=='light'){
+            preference='dark'
+        }else{
+            preference='light'
+        }
+        localStorage.setItem('data-bs-theme', preference);
+    }
+</script>

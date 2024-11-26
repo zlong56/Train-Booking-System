@@ -1,0 +1,208 @@
+{% extends "backend/base/admin_base.html" %}
+{% load static %}
+{% load custom_filters %}
+{% block title %} CLIENT-DASHBOARD {% endblock %}
+
+{% block content %}
+
+<!-- APPLICANT -->
+<div class="row">
+    <div class="col-10">
+        <h3>APPLICANT</h3>
+    </div>
+</div>
+<form id="applicant_btn_form" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="row">
+        <div class="col-xl-12">
+            <div class="card crm-widget">
+                <div class="card-body p-0">
+                    <div class="row g-0" id="applicant_button_card">
+                        <a class="col">
+                            <div class="card card-animate" style="height:100%">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-center">
+                                        <div class="flex-grow-1 overflow-hidden">
+                                            <p class="text-uppercase fw-medium text-muted text-truncate mb-0"> Pending Submit </p>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex align-items-end justify-content-between mt-4">
+                                        <div>
+                                            <h4 class="fs-22 fw-semibold ff-secondary mb-4">
+                                                <span class="counter-value" data-target="{{pending_cnt|remove:','}}">0</span>
+                                            </h4>
+                                        </div>
+                                        <div class="avatar-sm flex-shrink-0">
+                                            <span class="avatar-title bg-warning rounded fs-3">
+                                                {% include "libs/icon.html" with icon="file-text" %}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                        <a class="col">
+                            <div class="card card-animate" style="height:100%">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-center">
+                                        <div class="flex-grow-1 overflow-hidden">
+                                            <p class="text-uppercase fw-medium text-muted text-truncate mb-0"> Submitted </p>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex align-items-end justify-content-between mt-4">
+                                        <div>
+                                            <h4 class="fs-22 fw-semibold ff-secondary mb-4">
+                                                <span class="counter-value" data-target="{{submitted_cnt|remove:','}}">0</span>
+                                            </h4>
+                                        </div>
+                                        <div class="avatar-sm flex-shrink-0">
+                                            <span class="avatar-title bg-success rounded fs-3">
+                                                {% include "libs/icon.html" with icon="check" %}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                        <a class="col">
+                            <div class="card card-animate" style="height:100%">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-center">
+                                        <div class="flex-grow-1 overflow-hidden">
+                                            <p class="text-uppercase fw-medium text-muted text-truncate mb-0"> All </p>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex align-items-end justify-content-between mt-4">
+                                        <div>
+                                            <h4 class="fs-22 fw-semibold ff-secondary mb-4">
+                                                <span class="counter-value" data-target="{{applications_cnt|remove:','}}">0</span>
+                                            </h4>
+                                        </div>
+                                        <div class="avatar-sm flex-shrink-0">
+                                            <span class="avatar-title bg-secondary rounded fs-3">
+                                                {% include "libs/icon.html" with icon="list" %}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <button class="btn btn-secondary" type="submit" name="applicant_submit_btn" style="display:none;" id="applicant_submit_btn"></button>
+</form>
+
+<!-- APPLICATIONS -->
+<div class="row">
+    <div class="col-10">
+        <h3>APPLICATIONS</h3>
+    </div>
+</div>
+<form id="application_btn_form" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="row">
+        <div class="col-xl-12">
+            <div class="card crm-widget">
+                <div class="card-body p-0">
+                    <div class="row g-0" id="application_button_card">
+                        <a class="col">
+                            <div class="card card-animate" style="height:100%">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-center">
+                                        <div class="flex-grow-1 overflow-hidden">
+                                            <p class="text-uppercase fw-medium text-muted text-truncate mb-0"> Pending Payment </p>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex align-items-end justify-content-between mt-4">
+                                        <div>
+                                            <h4 class="fs-22 fw-semibold ff-secondary mb-4">
+                                                <span class="counter-value" data-target="{{pendingpayment_cnt|remove:','}}">0</span>
+                                            </h4>
+                                        </div>
+                                        <div class="avatar-sm flex-shrink-0">
+                                            <span class="avatar-title bg-warning rounded fs-3">
+                                                {% include "libs/icon.html" with icon="credit-card" %}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                        <a class="col">
+                            <div class="card card-animate" style="height:100%">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-center">
+                                        <div class="flex-grow-1 overflow-hidden">
+                                            <p class="text-uppercase fw-medium text-muted text-truncate mb-0"> Done Payment </p>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex align-items-end justify-content-between mt-4">
+                                        <div>
+                                            <h4 class="fs-22 fw-semibold ff-secondary mb-4">
+                                                <span class="counter-value" data-target="{{donepayment_cnt|remove:','}}">0</span>
+                                            </h4>
+                                        </div>
+                                        <div class="avatar-sm flex-shrink-0">
+                                            <span class="avatar-title bg-success rounded fs-3">
+                                                {% include "libs/icon.html" with icon="check" %}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                        <a class="col">
+                            <div class="card card-animate" style="height:100%">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-center">
+                                        <div class="flex-grow-1 overflow-hidden">
+                                            <p class="text-uppercase fw-medium text-muted text-truncate mb-0"> All </p>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex align-items-end justify-content-between mt-4">
+                                        <div>
+                                            <h4 class="fs-22 fw-semibold ff-secondary mb-4">
+                                                <span class="counter-value" data-target="{{joborder_cnt|remove:','}}">0</span>
+                                            </h4>
+                                        </div>
+                                        <div class="avatar-sm flex-shrink-0">
+                                            <span class="avatar-title bg-secondary rounded fs-3">
+                                                {% include "libs/icon.html" with icon="list" %}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <button class="btn btn-secondary" type="submit" name="application_submit_btn" style="display:none;" id="application_submit_btn"></button>
+</form>
+
+{% endblock %}
+
+{% block script %}
+<script>
+    $(document).ready(function () {
+        $("#applicant_button_card a").click(function() {
+            document.getElementById("applicant_submit_btn").value = $(this).find("p").text().trim();
+            document.getElementById("applicant_submit_btn").click();
+        });
+    });
+</script>
+
+<script>
+    $(document).ready(function () {
+        $("#application_button_card a").click(function() {
+            document.getElementById("application_submit_btn").value = $(this).find("p").text().trim();
+            document.getElementById("application_submit_btn").click();
+        });
+    });
+</script>
+{% endblock %}

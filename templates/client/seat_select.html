@@ -1,0 +1,36 @@
+{% extends 'backend/base/admin_base.html' %}
+{% load static %}
+{% load custom_filters %}
+
+{% block title %}SELECT SEAT{% endblock %}
+
+{% block content %}
+
+<div class="row">
+    <h1 style="text-align: center;">Coach {{coach_obj.CoachType}}</h1>
+    <p style="text-align: center;">Please select {{no_pax}} seat.</p>
+    {% if not user.is_authenticated %}
+        <p style="color: red; font-size: 10px; text-align: center;">*Login to proceed with booking</p>
+    {% endif %}
+</div>    
+
+<br>
+{% include 'backend/seat_view.html' %}
+
+<form method="POST">
+    {% csrf_token %}
+    
+    <input type="hidden" name="selected_seats[]" value="{{ selectedSeats | join:',' }}">
+    <div class="row d-flex justify-content-center" style="margin-top: 20px;">
+        <a href="{% url 'coach_select' %}" class="btn btn-light" style="width:15%">Back</a>
+        {% if user.is_authenticated %}
+            <button id="checkoutButton" class="btn btn-primary" type="submit" name="check_out" style="width: 15%; margin-left: 10px;" disabled>Check Out</button>
+        {% else %}
+            <button class="btn btn-primary" type="submit" name="check_out" style="width: 15%; margin-left: 10px;" disabled>Check Out</button>
+        {% endif %}    
+    </div>
+</form>
+
+
+
+{% endblock %}

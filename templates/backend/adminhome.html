@@ -1,0 +1,80 @@
+{% extends "backend/base/admin_base.html" %}
+{% load static %}
+{% load custom_filters %}
+{% block title %} Dashboard {% endblock %}
+
+{% block content %}
+
+<style>
+    .train-list {
+        margin-top: 15px;
+        margin-bottom: 15px;
+        margin-left: 2px;
+        padding-bottom: 10px;
+        border-left: 4px solid #303956;
+    }
+</style>
+
+<div class='row'>
+	{% for train in train_obj %}
+        <div class="row train-list">
+
+            <div class="col">
+                <h5><b>{{train.DepartDateTime|date:"d M Y"}}</b></h5>
+            </div>
+
+            <div class="col">
+                <h5><b>{{train.TrainCode}}</b></h5>
+            </div>
+
+            <div class="col">
+                <div class="row">
+                    <h5><b>{{train.DepartDateTime|date:"g:ia"}}</b></h5>
+                </div>
+                <div class="row">
+                    <p>{{train.DepartLocation.Name}}</p>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="row">
+                    <h5><b>{{train.ArriveDateTime|date:"g:ia"}}</b></h5>
+                </div>
+                <div class="row">
+                    <p>{{train.ArriveLocation.Name}}</p>
+                </div>
+            </div>
+
+            <div class="col">
+                <span>MYR</span>
+                <span style="font-size: 18px; font-weight: bold;">{{train.Price}}</span>
+            </div>
+
+            <div class="col">
+                <button class="btn btn-primary" type="submit" value="{{train.pk}}" name="view_train">View Details</button>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
+{% endblock %}
+
+{% block script %}
+    <!--datatable js-->
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.2.2/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.html5.min.js"></script>
+{% endblock %}
+
+
+
+{% block plugin %}
+    <!--datatable css-->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css" />
+    <!--datatable responsive css-->
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap.min.css" />
+
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.2.2/css/buttons.dataTables.min.css">
+{% endblock %}

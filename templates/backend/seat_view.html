@@ -1,0 +1,135 @@
+<div class="container d-flex justify-content-center align-items-center">
+    <div class="row">
+        <div class="col">
+            {% for seat in col1_seat %}
+                <div class="row seat"
+                    data-id="{{ seat.pk }}"
+                    data-available="{{ seat.is_available }}"
+                    onclick="toggleSeat({{ seat.pk }}, this)"
+                    style="cursor: pointer; padding: 10px; margin: 5px;">
+                    <p>{{ seat.SeatNo }}</p>
+                </div>
+            {% endfor %}
+        </div>
+
+        <div class="col">
+            {% for seat in col2_seat %}
+                <div class="row seat"
+                    data-id="{{ seat.pk }}"
+                    data-available="{{ seat.is_available }}"
+                    onclick="toggleSeat({{ seat.pk }}, this)"
+                    style="cursor: pointer; padding: 10px; margin: 5px;">
+                    <p>{{ seat.SeatNo }}</p>
+                </div>
+            {% endfor %}
+        </div>
+
+        <div class="col" style="margin-left: 100px;">
+            {% for seat in col3_seat %}
+                <div class="row seat"
+                    data-id="{{ seat.pk }}"
+                    data-available="{{ seat.is_available }}"
+                    onclick="toggleSeat({{ seat.pk }}, this)"
+                    style="cursor: pointer; padding: 10px; margin: 5px;">
+                    <p>{{ seat.SeatNo }}</p>
+                </div>
+            {% endfor %}
+        </div>
+
+        <div class="col">
+            {% for seat in col4_seat %}
+                <div class="row seat"
+                    data-id="{{ seat.pk }}"
+                    data-available="{{ seat.is_available }}"
+                    onclick="toggleSeat({{ seat.pk }}, this)"
+                    style="cursor: pointer; padding: 10px; margin: 5px;">
+                    <p>{{ seat.SeatNo }}</p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<script>
+    const noPax = {{ no_pax }};  // Maximum number of seats to select
+    let selectedSeats = [];  // Array to store selected seat IDs
+
+    function updateHiddenInput() {
+        const hiddenInput = document.querySelector('input[name="selected_seats[]"]');
+        hiddenInput.value = JSON.stringify(selectedSeats);  // Convert the array to a JSON string
+    }
+
+    // Function to toggle seat selection
+    function toggleSeat(seatId, seatElement) {
+        if (selectedSeats.includes(seatId)) {
+            // Deselect the seat
+            seatElement.style.backgroundColor = 'lightgrey';
+            selectedSeats = selectedSeats.filter(id => id !== seatId);
+        } else {
+            // Check if selecting a new seat would exceed the allowed limit
+            if (selectedSeats.length >= noPax) {
+                alert(`You can only select ${noPax} seats.`);
+                return;  // Do nothing if the limit is reached
+            }
+
+            // Select the seat
+            seatElement.style.backgroundColor = 'green';
+            selectedSeats.push(seatId);
+        }
+
+        updateHiddenInput();
+
+        // Enable or disable the "Check Out" button based on the count of selected seats
+        document.getElementById("checkoutButton").disabled = selectedSeats.length !== noPax;
+    }
+
+    // Update seat statuses initially on page load and every 5 seconds thereafter
+    document.addEventListener('DOMContentLoaded', function() {
+        updateSeatStatus();  // Run immediately on load
+        setInterval(updateSeatStatus, 5000);  // Update every 5 seconds
+    });
+
+    function updateSeatStatus() {
+        fetch("{% url 'check_seat_status' coach_obj.id %}")
+            .then(response => response.json())
+            .then(data => {
+                document.querySelectorAll('.seat').forEach(seatDiv => {
+                    const seatId = seatDiv.getAttribute('data-id');
+                    const status = data[seatId];
+
+                    // Update seat colors based on their status
+                    if (status === 'LOCKED' | status === 'RESERVED') {
+                        seatDiv.style.backgroundColor = 'red';
+                        seatDiv.onclick = null;  // Disable selection for locked seats
+                    } else if (status === 'AVAILABLE') {
+                        // If seat is available, reset color to grey and allow selection
+                        seatDiv.style.backgroundColor = 'lightgrey';
+                        seatDiv.onclick = () => toggleSeat(seatId, seatDiv);
+                    }
+                });
+
+                // Update selected seats' colors back to green if they are still available
+                selectedSeats.forEach(seatId => {
+                    const seatDiv = document.querySelector(`.seat[data-id="${seatId}"]`);
+                    if (seatDiv && data[seatId] === 'AVAILABLE') {
+                        seatDiv.style.backgroundColor = 'green';
+                    }
+                });
+            })
+            .catch(error => console.error("Error fetching seat status:", error));
+    }
+</script>
+
+<script>
+    let selectedSeats = [];
+
+    function toggleSeat(seatId, seatElement) {
+        if (seatElement.style.backgroundColor === 'green') {
+            seatElement.style.backgroundColor = 'lightgrey';
+            selectedSeats = selectedSeats.filter(id => id !== seatId);
+        } else {
+            seatElement.style.backgroundColor = 'green';
+            selectedSeats.push(seatId);
+        }
+    }
+</script>

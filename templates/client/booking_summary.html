@@ -1,0 +1,111 @@
+{% extends 'backend/base/admin_base.html' %}
+{% load static %}
+
+{% block title %}BOOKING SUMMARY{% endblock %}
+
+{% block content %}
+
+<form method="POST">
+    {% csrf_token %}
+
+    <div class="row">
+        <div class="col-6">
+            <h3 style="margin-bottom: 20px;">Booking Summary ({{booking_obj.BookingNo}})</h3>
+            <br>
+    
+            <div class="row">
+                <p>Depart Date</p>
+                <h5><b>{{booking_obj.Train.DepartDateTime|date:"d M Y"}}</b></h5>
+            </div>
+    
+            <hr style="width: 80%;">
+            
+            <div class="row" style="margin-top: 20px;">
+                <div class="col-5">
+                    <p>Depart</p>
+                    <h5><b>{{booking_obj.Train.DepartDateTime|date:"g:ia"}}</b></h5>
+                    <p>{{booking_obj.Train.DepartLocation.Name}}</p>
+                </div>
+                <div class="col-5">
+                    <p>Arrival</p>
+                    <h5><b>{{booking_obj.Train.ArriveDateTime|date:"g:ia"}}</b></h5>
+                    <p>{{booking_obj.Train.ArriveLocation.Name}}</p>
+                </div>
+            </div>
+    
+            <hr style="width: 80%;">
+            
+            <div class="row">
+                <h3><b><i>Train Information</i></b></h3>
+            </div>
+    
+            <div class="row" style="margin-top: 20px;">
+                <div class="col-5">
+                    <p>Train Code</p>
+                    <h5><b>{{booking_obj.Train.TrainCode}}</b></h5>
+                </div>
+                <div class="col-5">
+                    <p>Seat No</p>
+                    <h5><b>
+                        {% for seat in booking_obj.Seat.all %}
+                            {{seat.CoachType}}-{{seat.SeatNo}},
+                        {% endfor %}
+                    </b></h5>
+                </div>
+            </div>
+    
+            <hr style="width: 80%;">
+    
+            <div class="row" style="margin-top: 20px;">
+                <div class="col-5">
+                    <p>Total Amount</p>
+                    <span>MYR</span>
+                    <span style="font-weight: bold; font-size: 18px;">{{booking_obj.Price}}</span>
+                </div>
+                <div class="col-5">
+                    <p>Total Seat</p>
+                    <h5><b>{{booking_obj.NoPax}}</b></h5>
+                </div>
+            </div>
+        </div>
+    
+        <div class="col-4">
+            <div class="row">
+                <div class="col">
+                    <label></label>
+                    <input class="form-control" placeholder="First Name">
+                </div>
+                <div class="col">
+                    <label></label>
+                    <input class="form-control" placeholder="Last Name">
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-8">
+                    <label></label>
+                    <input class="form-control" placeholder="Card Number">
+                </div>
+                <div class="col-4">
+                    <label></label>
+                    <input class="form-control" placeholder="CCV">
+                </div>
+            </div>
+    
+            <div class="row">
+                <div class="col-8">
+                </div>
+                <div class="col-4">
+                    <label></label>
+                    <input class="form-control" placeholder="MM/YY">
+                </div>
+            </div>
+    
+            <div class="row">
+                <button class="btn btn-success" type="submit" name="make_payment" style="margin-top: 20px;">Make Payment</button>
+            </div>
+        </div>
+    </div>
+</form>
+
+{% endblock %}

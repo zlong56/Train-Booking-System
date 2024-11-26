@@ -1,0 +1,74 @@
+{% extends "backend/base/admin_base.html" %}
+{% load static %}
+
+{% block title %}SELECT COACH{% endblock %}
+
+{% block content %}
+
+<style>
+    .coach-list {
+        margin-top: 15px;
+        margin-bottom: 15px;
+        margin-left: 2px;
+        padding-bottom: 10px;
+        border-left: 4px solid #303956;
+    }
+</style>
+
+<form method="POST">
+    {% csrf_token %}
+
+    <div class="row">
+        <div class="col">
+            <h5><b>Type A:</b></h5>
+            <p>AC Coach</p>
+        </div>
+
+        <div class="col">
+            <h5><b>Type B:</b></h5>
+            <p>Woman Coach</p>
+        </div>
+       
+        <div class="col">
+            <h5><b>Type C:</b></h5>
+            <p>Normal Coach</p>    
+        </div>
+        
+        <div class="col">
+            <h5><b>Type D:</b></h5>
+            <p>Normal Coach</p>
+        </div>
+        
+        <div class="col">
+            <h5><b>Type E:</b></h5>
+            <p>Normal Coach</p>
+        </div>
+        
+        <div class="col">
+            <h5><b>Type F:</b></h5>
+            <p>Sleeper Coach</p>
+        </div>
+    </div>
+
+    <br>
+
+    {% for coach_info in coach_seat_list %}
+        <div class="row coach-list">
+            <div class="col-2">
+                <span>Coach</span>
+                <span style="font-size: 20px; font-weight: bold;">{{coach_info.coach.CoachType}}</span>
+            </div>
+            
+            <div class="col-2">
+                <h4><b>{{coach_info.available_seat}}</b></h4>
+                <span>available seat</span>
+            </div>
+
+            <div class="col-3">
+                <button class="btn btn-primary" type="submit" value="{{coach_info.coach.pk}}" name="view_seat" {% if coach_info.available_seat == "0" %}disabled{% endif %}>View Seat</button>
+            </div>
+        </div>
+    {% endfor %}
+</form>
+
+{% endblock content %}

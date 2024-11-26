@@ -1,0 +1,58 @@
+{% extends "landing/base/index.html" %}
+{% load custom_filters %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-12 col-lg-9 col-xl-7">
+        <div class="card mt-4">
+
+            <div class="card-body p-4">
+                <div class="text-center mt-2">
+                    <h5 class="text-primary">Create New Account</h5>
+                </div>
+                <div class="p-2 mt-4">
+                    <form id="signup-form" method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        
+                        <div class="row">
+                            <label>Username</label>
+                            <input class="form-control" placeholder="Username" name="Username" style="margin-left:10px;" required>
+                        </div>
+                        
+                        <div class="row" style="margin-top: 10px;">
+                            <div class="col-6">
+                                <label>Password</label>
+                                <input class="form-control" type="password" placeholder="password" name="password1" required>
+                            </div>
+                            <div class="col-6">
+                                <label>Repeat Password</label>
+                                <input class="form-control" type="password" placeholder="repeat password" name="password2" required>
+                            </div>
+                        </div>
+                        
+                        <div class="row" style="margin-top: 10px;">
+                            <label>Name</label>
+                                <input class="form-control" placeholder="name" name="Name" style="margin-left:10px;" required>
+                        </div>
+
+                        <div class="mt-4">
+                            <button class="btn btn-primary" type="submit" name="signup" style="width: 100%;">Sign Up</button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+            <!-- end card body -->
+        </div>
+        <!-- end card -->
+
+        <div class="mt-4 text-center">
+            <p class="mb-0">Already have an account ? <a href="{% url 'login_user' %}" class="fw-semibold text-primary text-decoration-underline"> Signin </a> </p>
+        </div>
+        
+        
+
+    </div>
+</div>
+
+{% endblock content %}

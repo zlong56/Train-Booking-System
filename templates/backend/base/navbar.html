@@ -1,0 +1,62 @@
+{% load static %}
+
+<!-- ========== App Menu ========== -->
+<div class="app-menu navbar-menu">
+    <!-- LOGO -->
+    <div class="navbar-brand-box">
+        <!-- Dark Logo-->
+        <a href="#" class="logo logo-dark">
+            <span class="logo-sm">
+                <img src="{% static 'pwa_assets/logo.png' %}" alt="" height="22" style="padding:5px; background-color:#1a2548; border-radius:5px;">
+            </span>
+            <span class="logo-lg">
+                <img src="{% static 'pwa_assets/logo.png' %}" alt="" height="50" style="padding:8px; background-color:#1a2548; border-radius:5px;">
+            </span>
+        </a>
+        <!-- Light Logo-->
+        <a href="#" class="logo logo-light">
+            <span class="logo-sm">
+                <img src="{% static 'pwa_assets/logo.png' %}" alt="" height="22" style="padding:5px; background-color:#1a2548; border-radius:5px;">
+            </span>
+            <span class="logo-lg">
+                <img src="{% static 'pwa_assets/logo.png' %}" alt="" height="50" style="padding:8px; background-color:#1a2548; border-radius:5px;">
+            </span>
+        </a>
+        <button type="button" class="btn btn-sm p-0 fs-20 header-item float-end btn-vertical-sm-hover" id="vertical-hover">
+            <i class="ri-record-circle-line"></i>
+        </button>
+    </div>
+
+    <div id="scrollbar">
+        <div class="container-fluid">
+
+            <div id="two-column-menu">
+            </div>
+            <ul class="navbar-nav" id="navbar-nav">
+                {% if user != "AnonymousUser" %}
+                    <li class="menu-title"><span data-key="t-menu">MENU</span></li>
+                {% endif %}
+
+                <!-- ANONYMOUS USER -->
+                {% include "libs/nav.html" with label="HOME" url='userhome' icon="activity" %}
+
+                <!-- CLIENT -->
+                {% if user.AccType == "Client" %}
+                    {% include "libs/nav.html" with label="BOOKING" url='booking_view' icon="book" %}
+                {% endif %}
+
+                <!-- FOR ADMIN -->
+                {% if user.is_admin or user.is_superuser %}
+                    {% include "libs/nav.html" with label="HOME" url='home' icon="activity" %}
+                    {% include "libs/nav.html" with label="JOURNEY" url='journey_create' icon="activity" %}
+                {% endif %}
+            </ul>
+        </div>
+        <!-- Sidebar -->
+    </div>
+
+    <div class="sidebar-background"></div>
+</div>
+<!-- Left Sidebar End -->
+<!-- Vertical Overlay-->
+<div class="vertical-overlay"></div>

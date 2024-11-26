@@ -1,0 +1,146 @@
+{% extends 'backend/base/admin_base.html' %}
+{% load static %}
+
+{% block title %}BOOKING{% endblock %}
+
+{% block content %}
+
+<style>
+    .train-list {
+        margin-top: 15px;
+        margin-bottom: 15px;
+        margin-left: 2px;
+        padding-bottom: 10px;
+        border-left: 4px solid #303956;
+    }
+</style>
+
+<h1>UPCOMING JOURNEY</h1>
+
+<br>
+<form method="POST">
+    {% csrf_token %}
+
+    {% if booking_obj %}
+        {% for booking in booking_obj %}
+            <div class="row train-list" style="margin-top:20px;">
+
+                <div class="col">
+                    <h5><b>{{booking.Train.DepartDateTime|date:"d M Y"}}</b></h5>
+                    {% if booking.BookingStatus == "CANCEL" %}
+                        <h5 style="color: red;"><b>CANCEL</b></h5>
+                    {% endif %}
+                </div>
+
+                <div class="col">
+                    <h5><b>{{booking.Train.TrainCode}}</b></h5>
+                </div>
+
+                <div class="col">
+                    <div class="row">
+                        <h5><b>{{booking.Train.DepartDateTime|date:"g:ia"}}</b></h5>
+                    </div>
+                    <div class="row">
+                        <p>{{booking.Train.DepartLocation.Name}}</p>
+                    </div>
+                </div>
+
+                <div class="col">
+                    <div class="row">
+                        <h5><b>{{booking.Train.ArriveDateTime|date:"g:ia"}}</b></h5>
+                    </div>
+                    <div class="row">
+                        <p>{{booking.Train.ArriveLocation.Name}}</p>
+                    </div>
+                </div>
+
+                <div class="col">
+                    <span>MYR</span>
+                    <span style="font-size: 18px; font-weight: bold;">{{booking.Price}}</span>
+                    {% if booking.BookingStatus == "PENDING PAYMENT" %}
+                        <p style="color: red;">*Pending Payment</p>
+                    {% endif %}    
+                </div>
+
+                <div class="col">
+                    <span style="font-size: 18px;"><b>
+                        {% for seat in booking.Seat.all %}
+                            {{seat.CoachType}}-{{seat.SeatNo}},
+                        {% endfor %}
+                    </b></span>
+                    <p>Seat No</p>
+                </div>
+                
+                <div class="col">
+                    <button class="btn btn-primary" type="submit" value="{{booking.pk}}" name="booking_view">View Details</button>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>No Record Found</p>
+    {% endif %}
+
+    <hr style="margin-top:20px;">
+    <h1 style="color: red; margin-top: 20px; margin-bottom: 50px;">PENDING PAYMENT / CANCELLED</h1>
+
+    {% if pending_booking %}
+        {% for booking in pending_booking %}
+            <div class="row train-list" style="margin-top:20px; border-left: 4px solid red;">
+
+                <div class="col">
+                    <h5><b>{{booking.Train.DepartDateTime|date:"d M Y"}}</b></h5>
+                    {% if booking.BookingStatus == "CANCEL" %}
+                        <h5 style="color: red;"><b>CANCEL</b></h5>
+                    {% endif %}
+                </div>
+
+                <div class="col">
+                    <h5><b>{{booking.Train.TrainCode}}</b></h5>
+                </div>
+
+                <div class="col">
+                    <div class="row">
+                        <h5><b>{{booking.Train.DepartDateTime|date:"g:ia"}}</b></h5>
+                    </div>
+                    <div class="row">
+                        <p>{{booking.Train.DepartLocation.Name}}</p>
+                    </div>
+                </div>
+
+                <div class="col">
+                    <div class="row">
+                        <h5><b>{{booking.Train.ArriveDateTime|date:"g:ia"}}</b></h5>
+                    </div>
+                    <div class="row">
+                        <p>{{booking.Train.ArriveLocation.Name}}</p>
+                    </div>
+                </div>
+
+                <div class="col">
+                    <span>MYR</span>
+                    <span style="font-size: 18px; font-weight: bold;">{{booking.Price}}</span>
+                    {% if booking.BookingStatus == "PENDING PAYMENT" %}
+                        <p style="color: red;">*Pending Payment</p>
+                    {% endif %}    
+                </div>
+
+                <div class="col">
+                    <span style="font-size: 18px;"><b>
+                        {% for seat in booking.Seat.all %}
+                            {{seat.CoachType}}-{{seat.SeatNo}},
+                        {% endfor %}
+                    </b></span>
+                    <p>Seat No</p>
+                </div>
+                
+                <div class="col">
+                    <button class="btn btn-primary" type="submit" value="{{booking.pk}}" name="booking_view">View Details</button>
+                </div>
+            </div>
+        {% endfor %}
+        {% else %}
+            <p>No Record Found</p>
+    {% endif %}
+</form>
+
+{% endblock content %}
