@@ -119,17 +119,3 @@
             .catch(error => console.error("Error fetching seat status:", error));
     }
 </script>
-
-<script>
-    let selectedSeats = [];
-
-    function toggleSeat(seatId, seatElement) {
-        if (seatElement.style.backgroundColor === 'green') {
-            seatElement.style.backgroundColor = 'lightgrey';
-            selectedSeats = selectedSeats.filter(id => id !== seatId);
-        } else {
-            seatElement.style.backgroundColor = 'green';
-            selectedSeats.push(seatId);
-        }
-    }
-</script>
