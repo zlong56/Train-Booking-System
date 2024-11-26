@@ -38,7 +38,11 @@
                 {% endif %}
 
                 <!-- ANONYMOUS USER -->
-                {% include "libs/nav.html" with label="HOME" url='userhome' icon="activity" %}
+                {% if user.is_admin or user.is_superuser %}
+
+                {% else %}
+                    {% include "libs/nav.html" with label="HOME" url='userhome' icon="activity" %}
+                {% endif %}
 
                 <!-- CLIENT -->
                 {% if user.AccType == "Client" %}

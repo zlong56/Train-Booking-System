@@ -58,7 +58,7 @@ def login_user(request):
             if user.is_admin or user.is_superuser:
                 return redirect('adminhome')
             elif user.AccType == "Client":
-                return redirect('clienthome')
+                return redirect('userhome')
             else:
                 return redirect('login_user')
         else:
